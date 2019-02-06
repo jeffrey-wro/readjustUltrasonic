@@ -15,6 +15,7 @@ extern NiFpga_Session myrio_session;
 
 NiFpga_Status status;
 
+
 int main(int argc, char **argv)
 {
 	status = MyRio_Open();
@@ -35,6 +36,9 @@ int main(int argc, char **argv)
 
 	int speed = 200;
 	int delay = 3;
+
+	//Calculating speed of sound
+	int distance = (speed * "speedofsound")/2;
 
 	int leftCount = 0;
 	int rigthCount = 0;
