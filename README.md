@@ -1,2 +1,3 @@
 # square
-A program that make the robot run in a square
+A program that has made up data so that the robot can 
+move around and with mock data, the robot moves if too close 
