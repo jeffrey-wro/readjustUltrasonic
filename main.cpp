@@ -58,10 +58,10 @@ int main(int argc, char **argv)
 
 		if(dd < 30)
 		{
-
-			rigthCount -= 465;
-			mc.setMotorDegrees(DC, 0,0, speed, rigthCount);
-			Utils::waitFor(2);
+			mc.setServoSpeed(DC,0,0);
+			rigthCount = mc.readEncoderDegrees(DC, DC_1) + 465;
+			mc.setMotorDegrees(DC, speed, rigthCount,0,0);
+			Utils::waitFor(3);
 			printf("%d, Turning\n", dd);
 		}else{
 
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 			//leftCount += 360;
 			//rigthCount -= 360;
 			//mc.setMotorDegrees(DC, speed, leftCount, speed, rigthCount);
-			
+			Utils::waitFor(1);
 			printf("%d, Forward\n", dd);
 
 		}
@@ -91,7 +91,6 @@ int main(int argc, char **argv)
 
 	return 0;
 }
-
 
 void waitForMilli (int milli_seconds) {
   
