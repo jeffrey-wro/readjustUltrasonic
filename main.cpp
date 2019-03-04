@@ -58,9 +58,10 @@ int main(int argc, char **argv)
 
 		if(dd < 30)
 		{
+
 			rigthCount -= 465;
-			mc.setMotorDegree(DC, DC_1, speed, rigthCount);
-			Utils::waitFor(3);
+			mc.setMotorDegrees(DC, 0,0, speed, rigthCount);
+			Utils::waitFor(2);
 			printf("%d, Turning\n", dd);
 		}else{
 
