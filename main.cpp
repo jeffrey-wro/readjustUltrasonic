@@ -44,37 +44,35 @@ int main(int argc, char **argv)
 	int volt = mc.readBatteryVoltage(1);
 	printf("%d\n\n", volt);
 
-
 	int speed = 200;
-
 	int rigthCount = 0;
 
 	int loopTime = time(0) + 20; 
 	while(time(0) < loopTime){
 	
-		//mc.setMotorSpeeds(DC, 0, 0);
-
 		dd = ultrasonic.getDistance();
 
 		if(dd < 30)
 		{
-			rigthCount -= 465;
-			mc.setMotorDegree(DC, DC_1, speed, rigthCount);
-			Utils::waitFor(3);
 			printf("%d, Turning\n", dd);
+			fflush(stdout);
+
+			rigthCount = mc.readEncoderDegrees(DC, DC_1) + 465;
+			mc.setMotorDegrees(DC, speed, rigthCount, 0, 0);
+			
+			Utils::waitFor(3);
+
 		}else{
+			printf("%d, Forward\n", dd);
 
 			mc.setMotorSpeeds(DC, speed, -speed);
-			//leftCount += 360;
-			//rigthCount -= 360;
-			//mc.setMotorDegrees(DC, speed, leftCount, speed, rigthCount);
 			
-			printf("%d, Forward\n", dd);
+			Utils::waitFor(1);
+			mc.setMotorSpeeds(DC, 0, -0);
 
 		}
 		fflush(stdout);
 
-		Utils::waitFor(1);
 
 		//for(int i=100000000; i >0; i--);
 
