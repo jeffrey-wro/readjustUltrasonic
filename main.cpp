@@ -8,22 +8,25 @@
 #include "I2C.h"
 #include "Motor_Controller.h"
 #include "Utils.h"
+#include "Ultrasonic.h"
+
+#include <sys/time.h>
 
 using namespace std;
 
 extern NiFpga_Session myrio_session;
 
+void waitForMilli (int usecs);
+
 NiFpga_Status status;
-void distanceInit(int low, int high);
-void updateDistance();
-int getDistance();
+
 int dd;
 
 int main(int argc, char **argv)
 {
   
+    Ultrasonic ultrasonic;
 
-	distanceInit(15,20);//range of sensor
 
 	status = MyRio_Open();
 	if (MyRio_IsNotSuccess(status))
@@ -41,31 +44,41 @@ int main(int argc, char **argv)
 	int volt = mc.readBatteryVoltage(1);
 	printf("%d\n\n", volt);
 
-	int speed = 200;
-	//int delay = 3;
 
-	int leftCount = 0;
+	int speed = 200;
+
 	int rigthCount = 0;
 
-	//update the sensor every 3 seconds
+	int loopTime = time(0) + 20; 
+	while(time(0) < loopTime){
+	
+		//mc.setMotorSpeeds(DC, 0, 0);
 
-	for(int i=0; i<25; i++){
-		dd = getDistance();
-		if(dd < 10)
+		dd = ultrasonic.getDistance();
+
+		if(dd < 30)
 		{
 			rigthCount -= 465;
-			mc.setMotorDegrees(DC, 0, leftCount, speed, rigthCount);
+			mc.setMotorDegree(DC, DC_1, speed, rigthCount);
+			Utils::waitFor(3);
+			printf("%d, Turning\n", dd);
 		}else{
-			leftCount -= 360;
-			rigthCount += 360;
-			mc.setMotorDegrees(DC, speed, leftCount, speed, rigthCount);
+
+			mc.setMotorSpeeds(DC, speed, -speed);
+			//leftCount += 360;
+			//rigthCount -= 360;
+			//mc.setMotorDegrees(DC, speed, leftCount, speed, rigthCount);
 			
+			printf("%d, Forward\n", dd);
+
 		}
+		fflush(stdout);
+
 		Utils::waitFor(1);
 
+		//for(int i=100000000; i >0; i--);
+
 	}
-	Utils::waitFor(2);
-	
 
 	mc.controllerReset(DC);
 	mc.controllerReset(SERVO);
@@ -78,27 +91,13 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-void distanceInit(int low, int high)
-{
-	//set the initial distance between range of sensor which is 2cm and 450 cm
-	dd = ((rand()%(high - low )) + low); //whatever function it is
 
+void waitForMilli (int milli_seconds) {
+  
+    // Stroing start time 
+    clock_t start_time = clock(); 
+  
+    // looping till required time is not acheived 
+    while (clock() < start_time + milli_seconds);
+  
 }
-
-void updateDistance()
-{
-	//add a small number of change
-	dd += ((rand()%(5 - -5)) + -5); //whatever function it is
-	fflush(stdout);
-}
-
-///get distance in cm
-int getDistance()
-{
-	updateDistance();
-	printf("GetDisatnce: %d\n",dd);
-	fflush(stdout);
-
-	return dd;
-}
-

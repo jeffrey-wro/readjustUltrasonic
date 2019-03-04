@@ -1,7 +1,7 @@
-OBJS	= main.o
-SOURCE	= main.cpp
+OBJS	= main.o Ultrasonic.o
+SOURCE	= main.cpp Ultrasonic.cpp
 HEADER	= 
-OUT		= sonic.out
+OUT		= readjustsonic.out
 CC		= /usr/local/oecore-x86_64/sysroots/x86_64-nilrtsdk-linux/usr/bin/arm-nilrt-linux-gnueabi/arm-nilrt-linux-gnueabi-g++ 
 CFLAGS	= --sysroot=/usr/local/oecore-x86_64/sysroots/cortexa9-vfpv3-nilrt-linux-gnueabi -std=c++11 -pthread
 INCLUDE = -Iinclude/myrio -Iinclude/csupport -I"/usr/local/oecore-x86_64/sysroots/cortexa9-vfpv3-nilrt-linux-gnueabi/usr/include" -I"/usr/local/oecore-x86_64/sysroots/cortexa9-vfpv3-nilrt-linux-gnueabi/usr/include/c++/4.9.2/arm-nilrt-linux-gnueabi" 
@@ -13,6 +13,9 @@ all: $(OBJS)
 
 main.o: main.cpp
 	$(CC) $(CFLAGS) $(INCLUDE) $(FLAGS) main.cpp
+
+Ultrasonic.o: Ultrasonic.cpp
+	$(CC) $(CFLAGS) $(INCLUDE) $(FLAGS) Ultrasonic.cpp
 
 clean:
 	rm -f $(OBJS) $(OUT)
