@@ -54,6 +54,7 @@ int main(int argc, char **argv)
 
 		if(dd < 30)
 		{
+
 			printf("%d, Turning\n", dd);
 			fflush(stdout);
 
@@ -66,9 +67,9 @@ int main(int argc, char **argv)
 			printf("%d, Forward\n", dd);
 
 			mc.setMotorSpeeds(DC, speed, -speed);
-			
 			Utils::waitFor(1);
 			mc.setMotorSpeeds(DC, 0, -0);
+
 
 		}
 		fflush(stdout);
@@ -88,7 +89,6 @@ int main(int argc, char **argv)
 
 	return 0;
 }
-
 
 void waitForMilli (int milli_seconds) {
   
