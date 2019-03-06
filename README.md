@@ -1,6 +1,5 @@
 # readjustUltrasonic
-A program that has made up data so that the robot can 
-move around and with mock data, the robot moves if too close 
+A program that read data from ultrasonic sensor, the robot will turn if too close to obstacle
 
 This project requires:
 myrio
